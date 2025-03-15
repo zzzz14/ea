@@ -205,3 +205,4 @@ Login: {self.login}
 Error: {str(e)}
 Traceback: {traceback.format_exc()}
 {'='*50}
+            """)
