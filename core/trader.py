@@ -243,7 +243,8 @@ class MT5Trader:
                     self.process_symbol(symbol)
                     
             # Optimize parameters if needed
-            self.optimize_parameters()
+            trading_history = self.get_trading_history()
+            self.optimize_parameters(trading_history)
             
         except Exception as e:
             logging.error(f"Error in trading cycle: {str(e)}")
@@ -298,7 +299,7 @@ class MT5Trader:
                 
         return False
 
-    def optimize_parameters(self):
+    def optimize_parameters(self, trading_history):
         """Optimize trading parameters using ML"""
         try:
             current_time = time.time()
@@ -306,7 +307,7 @@ class MT5Trader:
             
             # Optimize every hour
             if current_time - last_optimization > 3600:
-                self.ml_optimizer.optimize_parameters(mt5.history_deals_get())
+                self.ml_optimizer.optimize_parameters(trading_history)
                 self.last_optimization = current_time
                 
         except Exception as e:
@@ -344,6 +345,24 @@ class MT5Trader:
             
         return True
 
+    def get_trading_history(self):
+        """Get trading history for optimization"""
+        try:
+            # Define the timeframe for history retrieval
+            end_time = datetime.now()
+            start_time = end_time - pd.Timedelta(days=30)  # Last 30 days
+            
+            # Retrieve trading history
+            history = mt5.history_deals_get(start_time, end_time)
+            if history is None:
+                raise Exception("Failed to get trading history")
+            
+            return history
+            
+        except Exception as e:
+            logging.error(f"Error getting trading history: {str(e)}")
+            return None
+
     def run(self):
         """Main bot running method"""
         try:
@@ -366,7 +385,7 @@ class MT5Trader:
             # Main loop
             while not self.exit_flag:
                 try:
-                    self.run_trading_cycle()
+                    self.trading_cycle()
                 except Exception as e:
                     logging.error(f"Error in trading cycle: {str(e)}")
                 
