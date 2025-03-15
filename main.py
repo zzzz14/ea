@@ -206,3 +206,11 @@ Error: {str(e)}
 Traceback: {traceback.format_exc()}
 {'='*50}
             """)
+
+def main():
+    """Main entry point"""
+    bot = TradingBot()
+    bot.run()
+
+if __name__ == "__main__":
+    main()
