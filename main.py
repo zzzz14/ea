@@ -10,7 +10,6 @@ import os
 parent_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, parent_dir)
 
-
 # Import local modules
 from tb.config.mt5_config import MT5Config
 from tb.config.trading_config import TradingConfig
@@ -35,7 +34,7 @@ class TradingBot:
 
     def handle_shutdown(self, signum, frame):
         """Handle shutdown signals"""
-        self.logger.info("""
+        self.logger.info(f"""
 {'='*50}
 SHUTDOWN SIGNAL RECEIVED
 Time: {self.current_time} UTC
@@ -134,7 +133,6 @@ Login: {self.login}
 
                         except Exception as e:
                             self.logger.error(f"""
-                            
 {'='*50}
 SYMBOL PROCESSING ERROR
 Time: {self.current_time} UTC
@@ -149,7 +147,8 @@ Traceback: {traceback.format_exc()}
                     self.stats.calculate_daily_stats()
 
                     # Optimize parameters if needed
-                    self.trader.optimize_parameters()
+                    trading_history = self.trader.get_trading_history()
+                    self.trader.optimize_parameters(trading_history)
 
                     # Sleep for next iteration
                     time.sleep(TradingConfig.RECONNECT_WAIT_TIME)
@@ -205,13 +204,4 @@ Time: {self.current_time} UTC
 Login: {self.login}
 Error: {str(e)}
 Traceback: {traceback.format_exc()}
-{'='*50}
-            """)
-
-def main():
-    """Main entry point"""
-    bot = TradingBot()
-    bot.run()
-
-if __name__ == "__main__":
-    main()
+{'
