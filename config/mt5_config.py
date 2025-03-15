@@ -9,9 +9,9 @@ class MT5Config:
     Login: zzzz14
     """
     # MT5 Account Settings
-    LOGIN_ID = 101657921  # Ganti dengan ID akun MT5 anda
-    PASSWORD = "8~2Jpg#A"  # Ganti dengan password akun anda
-    SERVER = "FBS-Demo"    # Ganti dengan server broker anda
+    LOGIN_ID = login  # Ganti dengan ID akun MT5 anda
+    PASSWORD = "pass"  # Ganti dengan password akun anda
+    SERVER = "server"    # Ganti dengan server broker anda
     
     # Trading Symbols
     SYMBOLS = []  # Will be populated dynamically
