@@ -204,4 +204,4 @@ Time: {self.current_time} UTC
 Login: {self.login}
 Error: {str(e)}
 Traceback: {traceback.format_exc()}
-{'
+{'='*50}
